@@ -151,11 +151,16 @@ class Base:
         if self.x2 +self.WIDTH < 0:
             self.x2 = self.x1 + self.WIDTH
 
+    def draw(self, win):
+        win.blit(self.IMG, (self.x2, self.y))
+        win.blit(self.IMG, (self.x2, self.y))
+
 
 def draw_window(win, bird):
     win.blit(BG_IMG, (0,0))
     bird.draw(win)
     pygame.display.update()
+
 
 def main():
     bird = Bird(200, 200)
@@ -174,5 +179,6 @@ def main():
 
     pygame.quit()
     quit()
+
 
 main()

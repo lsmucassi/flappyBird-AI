@@ -103,7 +103,7 @@ class Pipe:
         self.passed = False
         self.set_height()
 
-    def set_height():
+    def set_height(self):
         self.height = random.randrange(50, 450)
         self.top = self.height - self.PIPE_TOP.get_height()
         self.bottom = self.height + self.GAP
@@ -145,6 +145,7 @@ class Base:
     def move(self):
         self.x1 -= self.VEL
         self.x2 -= self.VEL
+
         if self.x1 + self.WIDTH < 0:
             self.x1 = self.x2 + self.WIDTH
         
@@ -152,18 +153,24 @@ class Base:
             self.x2 = self.x1 + self.WIDTH
 
     def draw(self, win):
-        win.blit(self.IMG, (self.x2, self.y))
+        win.blit(self.IMG, (self.x1, self.y))
         win.blit(self.IMG, (self.x2, self.y))
 
 
-def draw_window(win, bird):
+def draw_window(win, bird, pipes, base):
     win.blit(BG_IMG, (0,0))
+    for pipe in pipes:
+        pipe.draw(win)
+
+    base.draw(win)
     bird.draw(win)
     pygame.display.update()
 
 
 def main():
-    bird = Bird(200, 200)
+    bird = Bird(230, 350)
+    base = Base(730)
+    pipes = [Pipe(700)]
     win = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
     clock = pygame.time.Clock()    
 
@@ -174,8 +181,11 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
 
-        bird.move()
-        draw_window(win, bird)
+        #bird.move()
+        base.move()
+        for pipe in pipes:
+            pipe.move() 
+        draw_window(win, bird, pipes, base)
 
     pygame.quit()
     quit()

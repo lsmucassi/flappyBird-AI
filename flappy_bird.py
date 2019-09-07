@@ -16,3 +16,13 @@ BG_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bg.png
 
 #BIRD CLASS
 class Bird:
+    IMGS = BASE_IMG
+    MAX_ROT = 25
+    MAX_VEL = 20
+    ANIMATION_TIME = 5
+
+
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.titl = 0

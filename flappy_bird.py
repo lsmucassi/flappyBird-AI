@@ -26,3 +26,8 @@ class Bird:
         self.x = x
         self.y = y
         self.titl = 0
+        self.tick_count = 0
+        self.vel = 0
+        self.height = self.y
+        self.img_count = 0
+        self.img = self.IMGS[0]

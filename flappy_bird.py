@@ -5,8 +5,8 @@ import os
 import random
 
 # SCREEN DIMENSIONS
-WIN_HEIGHT = 600
-WIN_WIDTH = 800
+WIN_HEIGHT = 800
+WIN_WIDTH = 500
 
 #LOAD IMAGES
 BIRD_IMG = [pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bird1.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bird2.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bird3.png")))] 
@@ -16,7 +16,7 @@ BG_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bg.png
 
 #BIRD CLASS
 class Bird:
-    IMGS = BASE_IMG
+    IMGS = BIRD_IMG
     MAX_ROT = 25
     MAX_VEL = 20
     ANIMATION_TIME = 5
@@ -83,3 +83,29 @@ class Bird:
         rotated_image = pygame.transform.rotate(self.img, self.tilt)
         new_rect = rotated_image.get_rect(center=self.img.get_rect(topleft = (self.x, self.y)).center)
         win.blit(rotated_image, new_rect.topleft)
+
+    #collision detection
+    def get_mask(self):
+        return pygame.mask.from_surface(self.img)
+
+def draw_window(win, bird):
+    win.blit(BG_IMG, (0,0))
+    bird.draw(win)
+    pygame.display.update()
+
+def main():
+    bird = Bird(200, 200)
+    win = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
+
+    run = True
+    while run:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+        bird.move()
+        draw_window(win, bird)
+
+    pygame.quit()
+    quit()
+
+main()

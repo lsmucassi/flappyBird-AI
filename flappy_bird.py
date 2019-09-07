@@ -93,7 +93,7 @@ def draw_window(win, bird):
 def main():
     bird = Bird(200, 200)
     win = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
-    clock = pygame.time.clock()
+    clock = pygame.time.Clock()
 
     run = True
     while run:

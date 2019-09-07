@@ -25,7 +25,7 @@ class Bird:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.titl = 0
+        self.tilt = 0
         self.tick_count = 0
         self.vel = 0
         self.height = self.y
@@ -39,5 +39,21 @@ class Bird:
         self.height = self.y
 
     def move(self):
+        self.tick_count += 1
 
-        
+        dis = self.vel*self.tick_count + 1.5*self.tick_count**2
+
+        if dis >= 16:
+            dis = 16
+
+        if dis < 0:
+            dis -= 2
+
+        self.y = self.y + dis
+        #tilt bird up else tilt down
+        if dis < 0 or self.y < self.height + 50:
+            if self.tilt < self.MAX_ROT:
+                self.tilt = self.MAX_ROT
+        else:
+            if self.tilt > -90:
+                self.tilt -= self.MAX_VEL

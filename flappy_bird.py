@@ -21,7 +21,6 @@ class Bird:
     MAX_VEL = 20
     ANIMATION_TIME = 5
 
-
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -32,12 +31,10 @@ class Bird:
         self.img_count = 0
         self.img = self.IMGS[0]
 
-
     def jump(self):
         self.vel = -10.5
         self.tick_count = 0
         self.height = self.y
-
 
     def move(self):
         self.tick_count += 1
@@ -58,7 +55,6 @@ class Bird:
         else:
             if self.tilt > -90:
                 self.tilt -= self.MAX_VEL
-
 
     def draw(self, win):
         self.img_count += 1
@@ -88,6 +84,7 @@ class Bird:
     def get_mask(self):
         return pygame.mask.from_surface(self.img)
 
+
 def draw_window(win, bird):
     win.blit(BG_IMG, (0,0))
     bird.draw(win)
@@ -96,9 +93,11 @@ def draw_window(win, bird):
 def main():
     bird = Bird(200, 200)
     win = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
+    clock = pygame.time.clock()
 
     run = True
     while run:
+        clock.tick(30)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False

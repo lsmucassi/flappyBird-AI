@@ -1,7 +1,7 @@
 import pygame
 import neat
 import time
-#import os
+import os
 #import random
 
 from model.base import *
@@ -36,8 +36,8 @@ def draw_window(win, bird, pipes, base, score):
     bird.draw(win)
     pygame.display.update()
 
-
-def main():
+#OUR ACTIVATION FUNCTION - generates all the birds and plays them
+def main(genomes, config):
     bird = Bird(230, 350)
     base = Base(730)
     pipes = [Pipe(600)]
@@ -85,5 +85,20 @@ def main():
     pygame.quit()
     quit()
 
-
 main()
+
+def run(confi_path):
+    config = neat.config.Config(neat.DefaultGnome, neat.DefaultReproduction,
+                        neat.DefaultSpeciesSet, neat.DefaultStagnation, confi_path)
+    
+    p = neat.Population(config)
+    p.add_reporter(neat.StdOutReporter(True))
+    p.add_reporter(neat.StatisticsReporter)
+
+    winner = p.run(main, 50)
+
+if __name__ == "__main__":
+    local_dir = os.path.dirname(__file__)
+    config_path = os.path.join(local_dir, "config-feedforward.txt")
+    run(config_path)
+    

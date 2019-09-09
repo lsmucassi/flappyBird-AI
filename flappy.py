@@ -1,8 +1,8 @@
 import pygame
 import neat
 import time
-import os
-import random
+#import os
+#import random
 
 from model.base import *
 from model.pipe import *

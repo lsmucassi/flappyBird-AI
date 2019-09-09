@@ -62,8 +62,23 @@ def main(genomes, config):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+                pygame.quit()
+                quit()
 
-        #bird.move()
+        pipe_ind = 0
+        if len(birds) > 0:
+            if len(pipes) > 1 and birds[0].x > pipes[0].x + pipes.PIPE_TOP.get_width():
+                pipe_ind = 1
+
+        for x, bird in enumerate(birds):
+            bird.move()
+            ge[x].fitness += 0.1
+
+            output = nets[x].activate((bird.y, abs(bird.y - pipes[pipe_ind].height), abs(bird.y - pipes[pipe_ind].bottom)))
+
+            if output > 0.5:
+                bird.jump()
+
         rem = []
         add_pipe = False
         for pipe in pipes:
@@ -93,18 +108,13 @@ def main(genomes, config):
             pipes.remove(r)
 
         for x, bird in enumerate(birds):
-            if bird.y + bird.img.get_height() >= 730:
+            if bird.y + bird.img.get_height() >= 730 or bird.y < 0:
                 birds.pop(x)
                 nets.pop(x)
                 ge.pop(x)
 
         base.move()
         draw_window(win, bird, pipes, base, score)
-
-    pygame.quit()
-    quit()
-
-main()
 
 def run(confi_path):
     config = neat.config.Config(neat.DefaultGnome, neat.DefaultReproduction,

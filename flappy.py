@@ -70,7 +70,7 @@ def main(genomes, config):
 
         pipe_ind = 0
         if len(birds) > 0:
-            if len(pipes) > 1 and birds[0].x > pipes[0].x + pipes.PIPE_TOP.get_width():
+            if len(pipes) > 1 and birds[0].x > pipes[0].x + pipes[0].PIPE_TOP.get_width():
                 pipe_ind = 1
         else:
             run = False
@@ -122,18 +122,56 @@ def main(genomes, config):
         base.move()
         draw_window(win, birds, pipes, base, score)
 
-def run(confi_path):
-    config = neat.config.Config(neat.DefaultGnome, neat.DefaultReproduction,
-                        neat.DefaultSpeciesSet, neat.DefaultStagnation, confi_path)
+# def run(config_path):
+#     config = neat.config.Config(neat.DefaultGenome, neat.DefaultReproduction,
+#                          neat.DefaultSpeciesSet, neat.DefaultStagnation,
+#                          config_path)
     
-    p = neat.Population(config)
-    p.add_reporter(neat.StdOutReporter(True))
-    p.add_reporter(neat.StatisticsReporter)
+#     p = neat.Population(config)
+#     p.add_reporter(neat.StdOutReporter(True))
+#     stats = neat.StatisticsReporter
+#     p.add_reporter(stats)
 
+#     winner = p.run(main, 50)
+#     print('\nBest genome:\n{!s}'.format(winner))
+
+def run(config_file):
+    """
+    runs the NEAT algorithm to train a neural network to play flappy bird.
+    :param config_file: location of config file
+    :return: None
+    """
+    config = neat.config.Config(neat.DefaultGenome, neat.DefaultReproduction,
+                         neat.DefaultSpeciesSet, neat.DefaultStagnation,
+                         config_file)
+
+    # Create the population, which is the top-level object for a NEAT run.
+    p = neat.Population(config)
+
+    # Add a stdout reporter to show progress in the terminal.
+    p.add_reporter(neat.StdOutReporter(True))
+    stats = neat.StatisticsReporter()
+    p.add_reporter(stats)
+    #p.add_reporter(neat.Checkpointer(5))
+
+    # Run for up to 50 generations.
     winner = p.run(main, 50)
+
+    # show final stats
+    print('\nBest genome:\n{!s}'.format(winner))
+
 
 if __name__ == "__main__":
     local_dir = os.path.dirname(__file__)
     config_path = os.path.join(local_dir, "config-feedforward.txt")
     run(config_path)
+
+
+# if __name__ == '__main__':
+#     # Determine path to configuration file. This path manipulation is
+#     # here so that the script will run successfully regardless of the
+#     # current working directory.
+#     local_dir = os.path.dirname(__file__)
+#     config_path = os.path.join(local_dir, 'config-feedforward.txt')
+#     run(config_path)
     

@@ -38,7 +38,17 @@ def draw_window(win, bird, pipes, base, score):
 
 #OUR ACTIVATION FUNCTION - generates all the birds and plays them
 def main(genomes, config):
+    nets = []
+    ge - []
     birds = []
+
+    for g in genomes:
+        net = neat.nn.FeedForwardNetwork(g, config)
+        nets.append(net)
+        birds.append(Bird(230, 350))
+        g.fitness = 0
+        ge.append(g) 
+
     base = Base(730)
     pipes = [Pipe(600)]
     win = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))

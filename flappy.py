@@ -85,14 +85,18 @@ def main(genomes, config):
 
         if add_pipe:
             score += 1
+            for g in ge:
+                g.fitness += 5
             pipes.append(Pipe(600))
 
         for r in rem:
             pipes.remove(r)
 
-        for bird in birds:
+        for x, bird in enumerate(birds):
             if bird.y + bird.img.get_height() >= 730:
-                pass
+                birds.pop(x)
+                nets.pop(x)
+                ge.pop(x)
 
         base.move()
         draw_window(win, bird, pipes, base, score)

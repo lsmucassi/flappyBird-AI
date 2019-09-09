@@ -23,7 +23,7 @@ BG_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bg.png
 
 STAT_FONT = pygame.font.SysFont("comicsans", 50)
 
-def draw_window(win, bird, pipes, base, score):
+def draw_window(win, birds, pipes, base, score):
     win.blit(BG_IMG, (0,0))
 
     for pipe in pipes:
@@ -33,7 +33,10 @@ def draw_window(win, bird, pipes, base, score):
     win.blit(text, (WIN_WIDTH - 10 - text.get_width(), 10))
 
     base.draw(win)
-    bird.draw(win)
+
+    for bird in birds:
+        bird.draw(win)
+
     pygame.display.update()
 
 #OUR ACTIVATION FUNCTION - generates all the birds and plays them
@@ -42,8 +45,8 @@ def main(genomes, config):
     ge = []
     birds = []
 
-    for g in genomes:
-        net = neat.nn.FeedForwardNetwork(g, config)
+    for _, g in genomes:
+        net = neat.nn.FeedForwardNetwork.create(g, config)
         nets.append(net)
         birds.append(Bird(230, 350))
         g.fitness = 0
@@ -69,6 +72,9 @@ def main(genomes, config):
         if len(birds) > 0:
             if len(pipes) > 1 and birds[0].x > pipes[0].x + pipes.PIPE_TOP.get_width():
                 pipe_ind = 1
+        else:
+            run = False
+            break
 
         for x, bird in enumerate(birds):
             bird.move()
@@ -76,7 +82,7 @@ def main(genomes, config):
 
             output = nets[x].activate((bird.y, abs(bird.y - pipes[pipe_ind].height), abs(bird.y - pipes[pipe_ind].bottom)))
 
-            if output > 0.5:
+            if output[0] > 0.5:
                 bird.jump()
 
         rem = []
@@ -114,7 +120,7 @@ def main(genomes, config):
                 ge.pop(x)
 
         base.move()
-        draw_window(win, bird, pipes, base, score)
+        draw_window(win, birds, pipes, base, score)
 
 def run(confi_path):
     config = neat.config.Config(neat.DefaultGnome, neat.DefaultReproduction,

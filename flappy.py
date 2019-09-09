@@ -39,7 +39,7 @@ def draw_window(win, bird, pipes, base, score):
 #OUR ACTIVATION FUNCTION - generates all the birds and plays them
 def main(genomes, config):
     nets = []
-    ge - []
+    ge = []
     birds = []
 
     for g in genomes:
@@ -67,9 +67,12 @@ def main(genomes, config):
         rem = []
         add_pipe = False
         for pipe in pipes:
-            for bird in birds:
+            for x, bird in enumerate(birds):
                 if pipe.collide(bird):
-                    pass
+                    ge[x].fitness -= 1
+                    birds.pop(x)
+                    nets.pop(x)
+                    ge.pop(x)
 
                 if not pipe.passed and pipe.x < bird.x:
                     pipe.passed = True
